@@ -1,0 +1,60 @@
+import sqlite3
+
+# Connect to database
+conn = sqlite3.connect("students.db")
+cursor = conn.cursor()
+
+# Create table
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        age INTEGER NOT NULL
+    )
+''')
+conn.commit()
+
+# Function to insert a student
+def insert_student(name, age):
+    cursor.execute("INSERT INTO students (name, age) VALUES (?, ?)", (name, age))
+    conn.commit()
+    print("Student added successfully!")
+
+# Function to retrieve students
+def get_students():
+    cursor.execute("SELECT * FROM students")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
+
+# Function to update a student's age
+def update_student_age(student_id, new_age):
+    cursor.execute("UPDATE students SET age = ? WHERE id = ?", (new_age, student_id))
+    conn.commit()
+    print("Student updated successfully!")
+
+# Function to delete a student
+def delete_student(student_id):
+    cursor.execute("DELETE FROM students WHERE id = ?", (student_id,))
+    conn.commit()
+    print("Student deleted successfully!")
+
+# Example operations
+insert_student("Anshu", 21)
+insert_student("Raj", 22)
+get_students()
+update_student_age(1, 23)
+delete_student(2)
+get_students()
+
+# Close connection
+conn.close()
+
+#Expected Output
+Student added successfully!
+Student added successfully!
+(1, 'Anshu', 21)
+(2, 'Raj', 22)
+Student updated successfully!
+Student deleted successfully!
+(1, 'Anshu', 23)
