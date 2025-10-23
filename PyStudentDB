@@ -1,3 +1,4 @@
+# Library used for connecting SQL in Python
 import sqlite3
 
 # Connect to database
